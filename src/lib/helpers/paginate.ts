@@ -7,7 +7,6 @@ export default async <T>(entty: T, page: string | undefined, show: string | unde
 
     const entity = await  (entty as T)//.count() 
 
-    console.log(entity, entty)
     return {
 
         skip:0,// (  / Number(show) ) * Number(page) ,
