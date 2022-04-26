@@ -1,0 +1,87 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Customer {
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  firstName String
+  lastName  String
+  phone     String
+  address   Address?
+  addressId Int
+  code String?
+  @@id([firstName, lastName])
+}
+
+model Address {
+  id                Int      @id @default(autoincrement())
+  country           String
+  city              String?
+  province          String?
+  town              String?
+  no                String?
+  postCode          String?
+  street            String?
+  building          String?
+  doorNo            String?
+  customer          Customer @relation(fields: [customerFirstName, customerLastName], references: [firstName, lastName])
+  customerFirstName String
+  customerLastName  String
+}
+
+
+enum PriceType {
+  USD
+  TL
+  EUR
+}
+
+
+model Machinery {
+  id Int @id @default(autoincrement())
+  name String 
+  unit Unit[]
+  part Part[]
+  models Model[]
+}
+
+model Unit {
+  id Int @id @default(autoincrement())
+  name String
+  machinary Machinery[]
+  part Part[]
+}
+
+
+model Part {
+  id Int @id @default(autoincrement())
+  name String
+  machinary Machinery[]
+  unit Unit[]
+  application String[]
+}
+
+model Model {
+  id Int @id @default(autoincrement())
+  machinery Machinery @relation(fields: [machineryId], references: [id])
+  machineryId Int
+}
+
+// i18n 
+model Site {
+  id Int @id @default(autoincrement())
+  name String
+  valueTr String
+  valueEng String
+  valueBul String
+}
+
+
