@@ -1,2 +1,2 @@
 # sungurlartarim  
-svelte-kit + windicss + less + prisma + postgresql
+svelte-kit + windicss + less + Mongoose/Mongodb 
