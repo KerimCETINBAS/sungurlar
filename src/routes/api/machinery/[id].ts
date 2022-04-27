@@ -39,19 +39,16 @@ return {
 
 export const patch: RequestHandler = async ({params, request, locals}) => {
 
-    const { unit , part, name  } = await request.json()
+    const { models, name  } = await request.json()
     try {
         return {
             body: await locals.Prisma.machinery.update({
                 where: {id: Number(params.id)}, 
-                include: { unit: true, part: true },
+                include: { models:true },
                 data: {
                     name,
-                    part: {
-                        set: (part || []).map((p: Number) => ({id: p}))
-                    },
-                    unit: {
-                        set: (unit || []).map((u: Number) => ({id: u}))
+                    models: {
+                        set: (models || []).map((p: Number) => ({id: p}))
                     }
             }})
         }

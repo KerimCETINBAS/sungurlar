@@ -26,7 +26,7 @@
         
          class:border-b-6={focused}
          class:border-cool-gray-500={focused}
-         {id} {value}  {required}
+         {id} bind:value={value}  {required}
          on:focus={()=>focused = true}
          on:blur={()=> focused = false}
          type="text"  >

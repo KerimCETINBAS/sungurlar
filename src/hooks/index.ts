@@ -1,13 +1,10 @@
 import type { Handle } from "@sveltejs/kit";
-import Prisma, * as PrismaAll from "@prisma/client";
-
-const PrismaClient = new (Prisma?.PrismaClient || PrismaAll?.PrismaClient);
-
+import { connect } from "mongoose"
+connect(import.meta.env.VITE_DB_URI).
+  catch(error => console.error(error));
 
 export const handle: Handle = async ({event, resolve}) => {
 
-    event.locals =  {
-        Prisma: PrismaClient
-    };
+   
     return  await resolve(event);
 }

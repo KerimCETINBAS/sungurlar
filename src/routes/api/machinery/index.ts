@@ -11,7 +11,7 @@ export const get: RequestHandler = async ({locals}) => {
 
 
     try {
-       
+        
  
         return {
             body:  await Prisma.machinery.findMany({include: { models: true}}) || []
@@ -36,7 +36,6 @@ export const post: RequestHandler = async ({locals, request}) => {
 
      try {
 
-        console.log( await Prisma.machinery.create({data }))
         return { body :  await Prisma.machinery.create({data }) }
     } catch (error) {
 

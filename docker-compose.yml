@@ -1,9 +1,7 @@
 services:
-  postgres:
-    image: postgres
-    environment:
-      POSTGRES_PASSWORD: 'sungurlar'
-      POSTGRES_USER: 'sungurlar'
-      DB_NAME: 'sungurlar'
+  mongodb:
+    image: mongo
+    volumes:
+      -  /data
     ports: 
-      - "5432:5432"
+      - "27017:27017"
