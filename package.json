@@ -17,6 +17,7 @@
     "@playwright/test": "^1.21.0",
     "@sveltejs/adapter-auto": "next",
     "@sveltejs/kit": "next",
+    "@types/mongoose": "^5.11.97",
     "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.10.1",
     "@typescript-eslint/parser": "^5.10.1",
@@ -37,11 +38,9 @@
   },
   "type": "module",
   "dependencies": {
-    "@prisma/client": "^3.12.0",
     "@splidejs/splide": "^4.0.1",
     "@splidejs/svelte-splide": "^0.2.1",
     "mongoose": "^6.3.1",
-    "prisma": "^3.12.0",
     "uuid": "^8.3.2"
   }
 }

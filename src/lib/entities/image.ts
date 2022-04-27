@@ -1,4 +1,4 @@
-import { Document, Schema, model,Types} from 'mongoose';
+import { Document, Schema, model,Types, models} from 'mongoose';
 
 export interface IImage extends Document {
   name: string;
@@ -16,3 +16,10 @@ const imageSchema = new Schema<IImage>({
     },
     alt: String
 })
+
+/* interface IImageModel extends Model<IImage> {
+  myStaticMethod(): number;
+}
+ */
+
+export const ImageModel = models.Image ||  model<IImage /*, ImageModel */>('Image', imageSchema);

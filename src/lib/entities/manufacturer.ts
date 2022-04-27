@@ -1,4 +1,4 @@
-import { Document, Schema, model,Types} from 'mongoose';
+import { Document, Schema, model,Types, models} from 'mongoose';
 
 export interface IManufacturer extends Document {
   name: string;
@@ -14,3 +14,6 @@ const manufacturerSchema = new Schema<IManufacturer>({
         ref: "Machinery"
     }]
 })
+
+
+export const ManufacturerModel = models.Manufacturer || model<IManufacturer>('Manufacturer', manufacturerSchema);

@@ -1,4 +1,4 @@
-import { Document, Schema, model,Types} from 'mongoose';
+import { Document, Schema, model,Types, models} from 'mongoose';
 import type { IMachinery} from "./machinery"
 import type { IManufacturer} from "./manufacturer"
 
@@ -11,7 +11,7 @@ export interface IModel extends Document {
 }
 
 
-const manufacturerSchema = new Schema<IModel>({
+const modelSchema = new Schema<IModel>({
     name: String,
     machinery:{
         type: Types.ObjectId,
@@ -28,3 +28,7 @@ const manufacturerSchema = new Schema<IModel>({
         ref: "Image"
     }]
 })
+
+
+
+export const ModelModel = models.Model ||  model<IModel>('Model', modelSchema);

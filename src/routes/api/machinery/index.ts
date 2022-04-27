@@ -1,20 +1,18 @@
 import selectSearchParams from "$lib/helpers/selectSearchParams"
-import type { PrismaClient } from "@prisma/client"
 import type { RequestHandler  } from "@sveltejs/kit"
+import { MachineryModel, type IMachinery } from "$lib/entities/machinery"
  
- 
-export const get: RequestHandler = async ({locals}) => {
-
-    const { Prisma } = locals 
+export const get: RequestHandler = async () => {
 
 
 
 
     try {
         
- 
+       
+        
         return {
-            body:  await Prisma.machinery.findMany({include: { models: true}}) || []
+            body: await MachineryModel.find()
         }  
     }  catch  {
         
@@ -28,15 +26,16 @@ export const get: RequestHandler = async ({locals}) => {
 
 
 
-export const post: RequestHandler = async ({locals, request}) => {
+export const post: RequestHandler = async ({ request}) => {
 
-    const { Prisma } = locals 
 
     const data = await request.json()
 
      try {
-
-        return { body :  await Prisma.machinery.create({data }) }
+        console.log(data)
+        return {
+             body :  await (await MachineryModel.create({ ...data  })).save()
+        }
     } catch (error) {
 
         return {

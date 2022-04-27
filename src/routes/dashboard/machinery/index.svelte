@@ -33,7 +33,8 @@
 
 
     const handleDeleteMachine = (id: number)=> {
-        fetch(`/api/machinery/${id}`, {method:"delete"}).then(async ()=>{
+        fetch(`./machinery/${id}`, {method:"delete"}).then(async data=>{
+                    
                               machinery = await fetch("/api/machinery", { 
                                 method: "GET", 
                                 headers: {
@@ -69,19 +70,19 @@
             </div>
         </div>
         <div class="table-row-group">
-            {#each machinery as {id, name, models} (id) }
+            {#each machinery as {_id, name, models} (_id) }
                 <div class="table-row">
-                    <div class="table-cell">{id}</div>
+                    <div class="table-cell">{_id}</div>
                     <div class="table-cell">{name}</div>
                     <div class="table-cell">
                         <Buttons.Flat  
-                            on:click={()=> goto(`/dashboard/machinery/${id}`)}>
+                            on:click={()=> goto(`/dashboard/machinery/${_id}`)}>
                             Detay
                         </Buttons.Flat>
 
 
                         <Buttons.Flat  
-                        on:click={()=>handleDeleteMachine(id)}>
+                        on:click={()=>handleDeleteMachine(_id)}>
                             sil
                         </Buttons.Flat>
                     </div>

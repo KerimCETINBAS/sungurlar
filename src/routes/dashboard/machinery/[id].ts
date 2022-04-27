@@ -1,3 +1,4 @@
+import { MachineryModel } from "$lib/entities/machinery";
 import type { RequestHandler } from "@sveltejs/kit";
 import { get as _get } from "../../api/machinery/[id]"
 
@@ -12,12 +13,18 @@ export const get: RequestHandler = async (request) => {
 }
 
 
-export const del: RequestHandler = async (request) => {
-    console.log("del")
-    //const {body} = (await _get(request))
-    
-    //await _del(request)
-    return {
-       body: "ok"
-    }
+export const del: RequestHandler = async ({params}) => {
+
+   try {
+        await MachineryModel.findByIdAndDelete(params.id)
+        return {
+        status: 200
+        }
+   } catch (error) {
+  
+        return {
+            status: 500,
+            error
+        }
+   }
 }

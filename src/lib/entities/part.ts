@@ -1,4 +1,4 @@
-import { Document, Schema, model,Types} from 'mongoose';
+import { Document, Schema, model,Types, models} from 'mongoose';
 import type { IMachinery} from "./machinery"
 import type { IManufacturer} from "./manufacturer"
 import type { IUnit } from './unit';
@@ -26,3 +26,6 @@ const partSchema = new Schema<IPart>({
         ref: "Image"
     }]
 })
+
+
+export const PartModel = models.Part ||  model<IPart>('Part', partSchema);
