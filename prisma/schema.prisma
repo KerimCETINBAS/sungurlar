@@ -48,31 +48,33 @@ enum PriceType {
 model Machinery {
   id Int @id @default(autoincrement())
   name String 
-  unit Unit[]
-  part Part[]
   models Model[]
+  image Images?
 }
 
 model Unit {
   id Int @id @default(autoincrement())
   name String
-  machinary Machinery[]
   part Part[]
+  model Model? @relation(fields: [modelId], references: [id])
+  modelId Int?
 }
 
 
 model Part {
   id Int @id @default(autoincrement())
   name String
-  machinary Machinery[]
   unit Unit[]
-  application String[]
+  image Images?
+
 }
 
 model Model {
   id Int @id @default(autoincrement())
-  machinery Machinery @relation(fields: [machineryId], references: [id])
-  machineryId Int
+  name String @unique
+  machinery Machinery? @relation(fields: [machineryId], references: [id])
+  machineryId Int?
+  units Unit[]
 }
 
 // i18n 
@@ -84,4 +86,13 @@ model Site {
   valueBul String
 }
 
+model Images {
+  id Int @id @default(autoincrement())
+  src String? 
+  alt String?
+  machinery Machinery? @relation(fields: [machineryId], references: [id])
+  machineryId Int?
 
+  part Part? @relation( fields: [partId], references: [id])
+  partId Int?
+}

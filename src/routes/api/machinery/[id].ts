@@ -7,7 +7,9 @@ export const get:RequestHandler = async  ({params, locals, url}) => {
 
     try {
             return {
-                body: await Prisma.machinery.findUnique({where: { id: Number(params.id)}})
+                body: await Prisma.machinery.findUnique({ 
+                    include: { models: true }, 
+                    where: { id: Number(params.id)}})
             }
     } catch (error) {
             return {
@@ -17,27 +19,41 @@ export const get:RequestHandler = async  ({params, locals, url}) => {
 }
 
 
-/* 
 export const put: RequestHandler = async ({params, locals, request}) => {
-    const { Prisma } = locals
+const { Prisma } = locals
 
-    return {
-        body:await Prisma.category.update({
-           where: { id: Number(params.id)},
-           include: { products: true },
-           data: {
-               products: {
-                    create: await request.json()
-               }
-           }
+
+const { models } = await request.json()
+return {
+    body:await Prisma.machinery.update({
+            where: { id: Number(params.id)},
+            include: { models: true },
+            data: {
+                models: {
+                    create: models || []
+                }
+            }
         })
     }
 }
- */
+
 export const patch: RequestHandler = async ({params, request, locals}) => {
+
+    const { unit , part, name  } = await request.json()
     try {
         return {
-            body: await locals.Prisma.machinery.update({where: {id: Number(params.id)}, data: await request.json()})
+            body: await locals.Prisma.machinery.update({
+                where: {id: Number(params.id)}, 
+                include: { unit: true, part: true },
+                data: {
+                    name,
+                    part: {
+                        set: (part || []).map((p: Number) => ({id: p}))
+                    },
+                    unit: {
+                        set: (unit || []).map((u: Number) => ({id: u}))
+                    }
+            }})
         }
     } catch (error) {
         return { error }
@@ -48,7 +64,7 @@ export const del: RequestHandler =  async ({locals, params}) => {
 
     try {
         return {
-            body: await locals.Prisma.category.delete({where: { id : Number(params.id)}})
+            body: await locals.Prisma.machinery.delete({where: { id : Number(params.id)}})
         }
     } catch (error) {
         

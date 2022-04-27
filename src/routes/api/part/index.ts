@@ -1,6 +1,5 @@
 import paginate from "$lib/helpers/paginate"
 import selectSearchParams from "$lib/helpers/selectSearchParams"
-import type { Prisma } from "@prisma/client"
 import type { RequestHandler  } from "@sveltejs/kit"
  
 export const get: RequestHandler = async ({locals, url, request, clientAddress}) => {

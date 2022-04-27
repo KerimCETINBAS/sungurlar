@@ -1,16 +1,16 @@
 
-export default async <T>(entty: T, page: string | undefined, show: string | undefined): Promise<{
+export default async (entty: any, page: string | undefined, show: string | undefined): Promise<{
     take: number,
     skip: number,
     totalPages: number
 }> => {
 
-    const entity = await  (entty as T)//.count() 
+    const count = await entty.count() 
 
     return {
 
-        skip:0,// (  / Number(show) ) * Number(page) ,
-        take: 0,
-        totalPages: 0
+        skip: page ?  Math.ceil((count / Number(show)) * (Number(page) - 1) ) : 0,
+        take: Number(show) || 0,
+        totalPages:  Math.ceil((count / Number(show))) || 0
     }
 }
