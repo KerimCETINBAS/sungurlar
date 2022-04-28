@@ -5,9 +5,10 @@ import type { IManufacturer} from "./manufacturer"
 
 export interface IModel extends Document {
   name: string;
-  machinery: Types.ObjectId | IMachinery
-  manufacturer: Types.ObjectId | IManufacturer
+  machinery?: Types.ObjectId | IMachinery
+  manufacturer?: Types.ObjectId | IManufacturer
   images: Types.ObjectId[]
+  units: Types.ObjectId[]
 }
 
 
@@ -15,17 +16,20 @@ const modelSchema = new Schema<IModel>({
     name: String,
     machinery:{
         type: Types.ObjectId,
-        ref: "Machinery",
-        required: true
+        ref: "Machinery"
     },
     manufacturer: {
         type: Types.ObjectId,
-        ref: "Manufacturer",
-        required: true
+        ref: "Manufacturer"
     },
     images: [{
         type: Types.ObjectId,
         ref: "Image"
+    }],
+    
+    units: [{
+        type: Types.ObjectId,
+        ref: "Unit"
     }]
 })
 

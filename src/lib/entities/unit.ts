@@ -8,7 +8,8 @@ export interface IUnit extends Document {
     name: string;
     model: Types.ObjectId | IModel;
     manufacturer: Types.ObjectId | IManufacturer;
-    parts: Types.ObjectId[] | IPart[]
+    parts: Types.ObjectId[] | IPart[];
+    description?: string;
   }
 
 
@@ -21,7 +22,9 @@ const unitSchema = new Schema<IUnit>({
     parts: [{
         type: Types.ObjectId,
         ref: "Part"
-    }]
+    }],
+    
+    description: String
 })
 
 

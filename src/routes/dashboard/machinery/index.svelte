@@ -1,14 +1,41 @@
+
+<script context="module" lang="ts">
+
+    import type { Load } from "@sveltejs/kit";
+    export const load: Load = async ({ fetch }) => {
+        const machinery = await fetch("/api/machinery", { 
+                method: "GET", 
+                headers: {
+                    "Content-Type": "application/json"
+                }}).then(data => data.json()) 
+
+        return {
+            props: {
+                machinery
+            }
+        }
+    }
+</script>
+
 <script lang="ts">
 
     import Buttons from "$lib/components/buttons"
     import { goto } from "$app/navigation"
     import Inputs from "$lib/components/inputs";
     import Primary from "$lib/components/buttons/primary.svelte";
-    export let machinery: any[] = [] //
 
+
+    export let machinery: any[] = [] //
     export let machineName = ""
 
+
+
+
+    // loading indicator purpose
     let addMachine: boolean = false
+
+
+    // add a machinery
     const handleAddMachine: ()=>Promise<void> = async () => {
         addMachine = true
         await fetch("/api/machinery", {
@@ -22,6 +49,7 @@
 
         })
 
+        // refetch after add
         machinery = await fetch("/api/machinery", { 
                 method: "GET", 
                 headers: {
@@ -31,9 +59,9 @@
         addMachine = false
     }
 
-
+    // delete
     const handleDeleteMachine = (id: number)=> {
-        fetch(`./machinery/${id}`, {method:"delete"}).then(async data=>{
+        fetch(`/api/machinery/${id}`, {method:"delete"}).then(async data=>{
                     
                               machinery = await fetch("/api/machinery", { 
                                 method: "GET", 
@@ -70,19 +98,19 @@
             </div>
         </div>
         <div class="table-row-group">
-            {#each machinery as {_id, name, models} (_id) }
+            {#each machinery as machine (machine._id) }
                 <div class="table-row">
-                    <div class="table-cell">{_id}</div>
-                    <div class="table-cell">{name}</div>
+                    <div class="table-cell">{machine._id}</div>
+                    <div class="table-cell">{machine.name}</div>
                     <div class="table-cell">
                         <Buttons.Flat  
-                            on:click={()=> goto(`/dashboard/machinery/${_id}`)}>
+                            on:click={()=> goto(`/dashboard/machinery/${machine._id}`)}>
                             Detay
                         </Buttons.Flat>
 
 
                         <Buttons.Flat  
-                        on:click={()=>handleDeleteMachine(_id)}>
+                        on:click={()=>handleDeleteMachine(machine._id)}>
                             sil
                         </Buttons.Flat>
                     </div>

@@ -2,7 +2,7 @@ import { Document, Schema, model,Types, models} from 'mongoose';
 
 export interface IManufacturer extends Document {
   name: string;
-  machineries: Types.ObjectId[]
+  machineries?: Types.ObjectId[]
 
 }
 

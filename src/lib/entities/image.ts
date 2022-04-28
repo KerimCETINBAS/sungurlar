@@ -22,4 +22,4 @@ const imageSchema = new Schema<IImage>({
 }
  */
 
-export const ImageModel = models.Image ||  model<IImage /*, ImageModel */>('Image', imageSchema);
+export const ImageModel = models.Image ||  model<IImage>('Image', imageSchema);

@@ -1,39 +1,65 @@
-import type { RequestHandler } from "@sveltejs/kit"
-import selectSearchParams from "$lib/helpers/selectSearchParams"
+import { MachineryModel } from "$lib/entities/machinery";
+import { ModelModel } from "$lib/entities/model";
+import type { RequestHandler } from "@sveltejs/kit";
 
 
-import { MachineryModel, type IMachinery } from "$lib/entities/machinery"
-export const get:RequestHandler = async  ({params,  url}) => {
+export const get: RequestHandler = async ({params}) => {
 
-    const { take, skip } = selectSearchParams(url, "take", "skip") as { take: string | undefined, skip: string | undefined }
+   try {
+
+    const machinery = await MachineryModel.findById(params.id).populate("models  ").lean().exec()
+
+        return {
+            body: {
+                machinery
+            }
+        }
+   } catch (error) {
+       return {
+           status: 500,
+           error
+       }
+   }
+}
+
+
+export const del: RequestHandler = async ({params, request}) => {
+
+   try {
+        await MachineryModel.findByIdAndDelete(params.id, {
+            $pull: {
+                models: await request.text()
+            }
+        })
+        return {
+            status: 200
+        }
+   } catch (error) {
+  
+        return {
+            status: 500,
+            error
+        }
+   }
+}
+
+
+export const put: RequestHandler = async  ({params, request}) => {
 
     try {
-            return {
-                body: {
-                    machineries: await MachineryModel.findById(params.id)
-                }
-            }
-    } catch (error) {
-            return {
-                error
-            }
-    }
-}
 
 
-export const put: RequestHandler = async ({params,  request}) => {
-
-
-    return {}
-}
-
-export const patch: RequestHandler = async ({params, request, locals}) => {
-
+        const newModel = await (await ModelModel.create({...await request.json()})).save()
     
-  return {}
-}
+        const updatetedMachinery = await MachineryModel.findByIdAndUpdate(params.id, {
+            $push: {
+                models: newModel,
+                new: true
+            }
+        })
 
-export const del: RequestHandler =  async ({params}) => {
-
-   return {}
+    } catch(error) {
+    }
+    return {
+    }
 }
