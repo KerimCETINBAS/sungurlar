@@ -7,7 +7,8 @@ import type { PrismaClient } from "@prisma/client";
 declare global {
 	declare namespace App {
 		export interface Locals {
-			Prisma: PrismaClient<Prisma.Prisma.PrismaClientOptions, never, Prisma.Prisma.RejectOnNotFound | Prisma.Prisma.RejectPerOperation | undefined>
+			Prisma: PrismaClient<Prisma.Prisma.PrismaClientOptions, never, Prisma.Prisma.RejectOnNotFound | Prisma.Prisma.RejectPerOperation | undefined>;
+			hello: string;
 		}
 		// interface Platform {}
 		// interface Session {}
