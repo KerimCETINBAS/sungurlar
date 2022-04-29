@@ -3,7 +3,7 @@
 
     import type { Load } from "@sveltejs/kit";
     export const load: Load = async ({ fetch }) => {
-        const machinery = await fetch("/api/machinery", { 
+        const {machineries} = await fetch("/api/machinery", { 
                 method: "GET", 
                 headers: {
                     "Content-Type": "application/json"
@@ -11,7 +11,7 @@
 
         return {
             props: {
-                machinery
+                machineries
             }
         }
     }
@@ -25,7 +25,7 @@
     import Primary from "$lib/components/buttons/primary.svelte";
 
 
-    export let machinery: any[] = [] //
+    export let machineries: any[] = [] //
     export let machineName = ""
 
 
@@ -50,11 +50,11 @@
         })
 
         // refetch after add
-        machinery = await fetch("/api/machinery", { 
+        machineries = await fetch("/api/machinery", { 
                 method: "GET", 
                 headers: {
                     "Content-Type": "application/json"
-                }}).then(data => data.json()) 
+                }}).then(data => data.json()).then(data=> data.machineries)
 
         addMachine = false
     }
@@ -63,12 +63,12 @@
     const handleDeleteMachine = (id: number)=> {
         fetch(`/api/machinery/${id}`, {method:"delete"}).then(async data=>{
                     
-                              machinery = await fetch("/api/machinery", { 
-                                method: "GET", 
-                                headers: {
-                                    "Content-Type": "application/json"
-                                }}).then(data => data.json()) 
-                        })
+            machineries = await fetch("/api/machinery", { 
+                method: "GET", 
+                headers: {
+                    "Content-Type": "application/json"
+            }}).then(data => data.json()).then(data=> data.machineries)
+        })
     }
 </script>
 
@@ -98,7 +98,7 @@
             </div>
         </div>
         <div class="table-row-group">
-            {#each machinery as machine (machine._id) }
+            {#each machineries as machine (machine._id) }
                 <div class="table-row">
                     <div class="table-cell">{machine._id}</div>
                     <div class="table-cell">{machine.name}</div>

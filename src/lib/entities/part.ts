@@ -11,6 +11,7 @@ export interface IPart extends Document {
   }]
   applications: Types.ObjectId[] | IUnit[],
   images: Types.ObjectId[] | IImage[]
+  manufacturer: Types.ObjectId | IManufacturer
 }
 
 
@@ -21,6 +22,10 @@ const partSchema = new Schema<IPart>({
         type: Types.ObjectId,
         ref: "Unit"
     }],
+    manufacturer: {
+        type: Types.ObjectId,
+        ref: "Manufacturer"
+    },
     images: [{
         type: Types.ObjectId,
         ref: "Image"
