@@ -12,7 +12,7 @@
         <ul class="p-4 flex flex-col gap-1">
             <li><a href="/dashboard">Dashboard</a></li>
             <li><a href="/dashboard/machinery">Makina</a>  </li>
-            <li><a href="/dashboard">Gider</a></li>
+            <li><a href="/dashboard/manufacturer">Uretici</a></li>
             <li><a href="/dashboard/transactions">Faturalar</a></li>
             <li><a href="/dashboard/customers">Musteriler</a></li>
             <li><a href="/dashboard/invertory">Envanter</a></li>

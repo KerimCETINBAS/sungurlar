@@ -5,8 +5,8 @@ import type { IModel } from './model';
 export interface IMachinery extends Document  {
   _id?: Types.ObjectId
   name: string;
-  manufacturers?: Types.ObjectId[] | IManufacturer[]
-  models?: Types.ObjectId[] | IModel[]
+  manufacturers?: IManufacturer[]
+  models:  IModel[]
   serialNo?: string,
 }
 

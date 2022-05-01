@@ -5,7 +5,7 @@ import type { IManufacturer} from "./manufacturer"
 
 export interface IModel extends Document {
   name: string;
-  machinery?: Types.ObjectId | IMachinery
+  machinery?: IMachinery
   manufacturer?: Types.ObjectId | IManufacturer
   images: Types.ObjectId[]
   units: Types.ObjectId[]

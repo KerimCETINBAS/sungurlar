@@ -22,19 +22,14 @@
     import Buttons from "$lib/components/buttons"
     import { goto } from "$app/navigation"
     import Inputs from "$lib/components/inputs";
-    import Primary from "$lib/components/buttons/primary.svelte";
-
-
+    import Table , { TableRow } from "$lib/components/table"
+    import disableWheel from "$lib/helpers/disableWheel";
     export let machineries: any[] = [] //
     export let machineName = ""
 
-
-
-
+    let edible: boolean = false 
     // loading indicator purpose
     let addMachine: boolean = false
-
-
     // add a machinery
     const handleAddMachine: ()=>Promise<void> = async () => {
         addMachine = true
@@ -48,7 +43,6 @@
             })
 
         })
-
         // refetch after add
         machineries = await fetch("/api/machinery", { 
                 method: "GET", 
@@ -58,7 +52,6 @@
 
         addMachine = false
     }
-
     // delete
     const handleDeleteMachine = (id: number)=> {
         fetch(`/api/machinery/${id}`, {method:"delete"}).then(async data=>{
@@ -72,12 +65,8 @@
     }
 </script>
 
-
-
-<section class="p-12">
-    
-    
-    <div class="flex gap-2">
+<section class="p-12 select-none relative" style="contain: content;">
+    <div class="flex gap-2 mb-4">
         {#if !addMachine}
             <Inputs.Text bind:value={machineName}> Makine adi </Inputs.Text>
             <Buttons.Primary on:click={handleAddMachine}>Makine ekle</Buttons.Primary>
@@ -85,38 +74,29 @@
             <small>Ekleniyor lutfen bekleyiniz</small>
         {/if}
     </div>
-    <div>
-       
-    </div>
-    <div class="table table-auto w-full">
-        <div class="table-caption">Enventar</div>
-        <div class="table-header-group">
-            <div class="table-row">
-                <div class="table-cell">#</div>
-                <div class="table-cell">Makina adi</div>
-                <div class="table-cell">##</div>
+    
+    <Table headings={['#',"ID","ADI"]} >
+        {#each machineries as machine, index (machine._id) }
+            <TableRow   on:edit={({detail})=>edible=true}
+            index={machine._id} cells={[index + 1, machine._id, machine.name]} />
+
+           
+        {/each}
+
+      
+    </Table>
+    {edible}
+    {#if edible} 
+
+        <div class="fixed w-full  h-full  top-0  left-0 " >
+            <div on:click|self={()=>edible = false} class="sticky flex top-0 left-0 w-full h-screen bg-dark-50 bg-opacity-59">
+                    <div>
+                        sdfsdf
+                    </div>
             </div>
         </div>
-        <div class="table-row-group">
-            {#each machineries as machine (machine._id) }
-                <div class="table-row">
-                    <div class="table-cell">{machine._id}</div>
-                    <div class="table-cell">{machine.name}</div>
-                    <div class="table-cell">
-                        <Buttons.Flat  
-                            on:click={()=> goto(`/dashboard/machinery/${machine._id}`)}>
-                            Detay
-                        </Buttons.Flat>
+    
+    {/if}
 
-
-                        <Buttons.Flat  
-                        on:click={()=>handleDeleteMachine(machine._id)}>
-                            sil
-                        </Buttons.Flat>
-                    </div>
-                </div>
-            {/each}
-        </div>
-    </div>
- 
 </section>
+<svelte:window use:disableWheel={{scrollable: !edible}} />

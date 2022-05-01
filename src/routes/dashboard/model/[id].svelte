@@ -19,6 +19,7 @@
     import { Helper, HelperType, Text } from "$lib/components/inputs"
     import { page } from "$app/stores"
 import Index from "$lib/components/breadcrump/index.svelte";
+import Backward from "$lib/components/utils/backward.svelte";
   
     export let  _id:number;
     export let name: string;
@@ -53,10 +54,7 @@ import Index from "$lib/components/breadcrump/index.svelte";
     } 
 </script>
 
-
-<div class="m-6 ml-12">
-    <Buttons.Secondary> 	&lt; Geri</Buttons.Secondary>
-</div>
+<Backward />
 <section class="p-12 bg-white">
 
     <div class="flex flex-row justify-between">
