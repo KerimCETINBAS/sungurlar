@@ -9,7 +9,7 @@
 
         export let headings: string[] | SvelteComponent[] = ["#", "makina adi", "#"]
     </script>
-    <div class="w-full bg-cool-gray-200 p-6 ">
+    <div class="w-full bg-cool-gray-700 p-6 ">
 
         <label class="bg-white flex items-center p-2 w-101">
 
@@ -24,7 +24,7 @@
    <div class="bg-cool-gray-300 ">
     <div class="table  w-full bg-cool-gray-00   border-collapse ">
  
-        <div class="table-header-group sticky top-0 bg-cool-gray-200">
+        <div class="table-header-group sticky top-0 bg-pink-600">
             <div class="table-row ">
 
                 {#each headings as heading, i (i) }
