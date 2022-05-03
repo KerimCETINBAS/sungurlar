@@ -1,12 +1,13 @@
 <script>
     import { page } from '$app/stores';
+import Backward from '$lib/components/utils/backward.svelte';
 
 </script>
 
 <header>
     
     <div class="h-42">
-
+    <Backward/>
     </div>
     <nav class="w-full">
         <ul class="p-4 flex flex-col gap-1">

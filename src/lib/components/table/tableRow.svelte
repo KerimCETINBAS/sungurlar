@@ -6,13 +6,10 @@
     export let index: number
     let edible: boolean = false
 
-
-	
-
     
 </script>
 
-<div class="table-row key-table-row cursor-pointer hover:(bg-cool-gray-400 bg-opacity-30)"
+<div class="table-row key-table-row cursor-pointer text-light-900 bg-cool-gray-700 hover:(bg-cool-gray-800 bg-opacity-90)"
     class:bg-pink-700={index % 2 == 0 ? true: false}   
     on:click={()=>dispatch("edit", cells)}>
     {#each cells as cell }

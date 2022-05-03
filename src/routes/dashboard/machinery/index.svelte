@@ -1,6 +1,7 @@
 
 <script context="module" lang="ts">
 
+    import type { IModel } from "$lib/entities/model";
     import type { Load } from "@sveltejs/kit";
     export const load: Load = async ({ fetch }) => {
         const {machineries} = await fetch("/api/machinery", { 
@@ -24,36 +25,16 @@
     import Inputs from "$lib/components/inputs";
     import Table , { TableRow } from "$lib/components/table"
     import disableWheel from "$lib/helpers/disableWheel";
+    import Add from "./_addMachinery.svelte";
+    
+    import EditMachine from "./_editMachinery.svelte"
     export let machineries: any[] = [] //
-    export let machineName = ""
-
-    let edible: boolean = false 
+    let filter = ""
+    let edible: [number,string, string] | undefined
     // loading indicator purpose
-    let addMachine: boolean = false
-    // add a machinery
-    const handleAddMachine: ()=>Promise<void> = async () => {
-        addMachine = true
-        await fetch("/api/machinery", {
-            method:"post",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                name: machineName
-            })
-
-        })
-        // refetch after add
-        machineries = await fetch("/api/machinery", { 
-                method: "GET", 
-                headers: {
-                    "Content-Type": "application/json"
-                }}).then(data => data.json()).then(data=> data.machineries)
-
-        addMachine = false
-    }
+   
     // delete
-    const handleDeleteMachine = (id: number)=> {
+    const handleDelete = (id: string)=> {
         fetch(`/api/machinery/${id}`, {method:"delete"}).then(async data=>{
                     
             machineries = await fetch("/api/machinery", { 
@@ -63,40 +44,52 @@
             }}).then(data => data.json()).then(data=> data.machineries)
         })
     }
+
+    const handleEdit = (id: string, name: string) => {
+        fetch("/api/machinery/" +  id , {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            }, 
+            body: JSON.stringify({
+                name
+            })
+        }).then(data=> data.json()).then(data=> {
+            machineries[ machineries.findIndex(x => x._id ==  id || null)] = data.machinery
+            machineries = machineries
+            edible = undefined
+        })
+    } 
+    $: filterPrediction = (x: { name: string; _id: string; models: IModel[]; }) => 
+            [x.name, x._id, ...x.models.map(d=>d.name)]
+                .some(y =>  new RegExp(filter, "i").test(y))
+    
+
 </script>
 
-<section class="p-12 select-none relative" style="contain: content;">
-    <div class="flex gap-2 mb-4">
-        {#if !addMachine}
-            <Inputs.Text bind:value={machineName}> Makine adi </Inputs.Text>
-            <Buttons.Primary on:click={handleAddMachine}>Makine ekle</Buttons.Primary>
-        {:else}
-            <small>Ekleniyor lutfen bekleyiniz</small>
-        {/if}
-    </div>
+
+
+<section class="p-12 select-none h-full " style="contain: content;">
     
-    <Table headings={['#',"ID","ADI"]} >
-        {#each machineries as machine, index (machine._id) }
-            <TableRow   on:edit={({detail})=>edible=true}
+    <!--  add component -->
+    <Add bind:machineries={machineries} />
+    <Table 
+        bind:filter
+        headings={['#',"ID","ADI"]} >
+        {#each machineries.filter( (x)=>filterPrediction(x), machineries) as machine, index (machine._id) }
+            <TableRow   on:edit={({detail})=>edible=detail}
             index={machine._id} cells={[index + 1, machine._id, machine.name]} />
-
-           
         {/each}
-
-      
     </Table>
-    {edible}
-    {#if edible} 
 
-        <div class="fixed w-full  h-full  top-0  left-0 " >
-            <div on:click|self={()=>edible = false} class="sticky flex top-0 left-0 w-full h-screen bg-dark-50 bg-opacity-59">
-                    <div>
-                        sdfsdf
-                    </div>
-            </div>
-        </div>
+
+    <EditMachine
+        id={edible && edible[1] || ""}
+        name={edible && edible[2] || ""}
+        isEditing={!!edible}
+        handleEdit={handleEdit}
+        handleDelete={handleDelete}
+    />
     
-    {/if}
-
 </section>
 <svelte:window use:disableWheel={{scrollable: !edible}} />

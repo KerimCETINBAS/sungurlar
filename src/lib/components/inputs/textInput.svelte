@@ -22,10 +22,9 @@
 
         <input 
          style="width:{width}px;"
-         class="bg-cool-gray-200 h-12  border-b-4  rounded-none outline-transparent border-gray-900 px-2 pt-2"
+         class="bg-cool-gray-200 h-12  rounded-none outline-transparent  px-2 pt-2"
         
-         class:border-b-6={focused}
-         class:border-cool-gray-500={focused}
+        
          {id} bind:value={value}  {required}
          on:focus={()=>focused = true}
          on:blur={()=> focused = false}

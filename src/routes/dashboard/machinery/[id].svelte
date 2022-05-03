@@ -19,9 +19,14 @@
     import Buttons from "$lib/components/buttons"
     import Inputs from "$lib/components/inputs"
     import { page } from "$app/stores";
+    import Table, {TableRow} from "$lib/components/table";
+    import EditModel from "./_editModel.svelte";
+    import Add from "./_addModel.svelte";
     export let machinery: IMachinery
     export let modelName = ""
-    
+
+    let edible: Array<string> = []
+    let filter: string = ""
     const handleAddNewModel = async () => {
 
          machinery.models = [...machinery.models, await fetch("/api/machinery/" + $page.params.id, {
@@ -36,8 +41,8 @@
 
     }
 
-    const handleDeleteModel = async (id: number) => {
-        machinery = await fetch("/api/machinery/" + $page.params.id,{
+    const handleDeleteModel =  (id: string) => {
+         fetch("/api/machinery/" + $page.params.id,{
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json"
@@ -50,17 +55,20 @@
             
             })
         }).then(data => data.json()).then(data=> data.machinery)
-
-       
+        .then(data=> {
+            machinery = data
+        })
 
     }
+
+    const handleEditModel = () => {}
 </script>
 
-<Backward/>
 
+<!-- 
 <section class="p-12">
     <h2 class="text-white mb-4">Yeni model ekle</h2>
-    
+   
     <div class="flex flex-row gap-4">
         <Inputs.Text 
         bind:value={modelName}
@@ -70,35 +78,31 @@
         >Ekle</Buttons.Primary>
     </div> 
  
-</section>
+</section> -->
 
-<section class="p-12">
-    <div class="table table-auto w-full">
-        <div class="table-caption">Modeller</div>
-        <div class="table-header-group">
-            <div class="table-row">
-                <div class="table-cell">#</div>
-                <div class="table-cell">Model</div>
-                <div class="table-cell">##</div>
-            </div>
-        </div>
-        <div class="table-row-group">
-          
-              {#each machinery?.models || []  as  model (model._id) }
-                <div class="table-row">
-                    <div class="table-cell">{model._id}</div>
-                    <div class="table-cell">{model.name}</div>
-                    <div class="table-cell flex">
-                        <Buttons.Flat on:click={()=>goto("/dashboard/model/" + model._id)} >Detay</Buttons.Flat>
-                        <Buttons.Flat on:click={()=>handleDeleteModel(model._id )}> Sil </Buttons.Flat>
-                
-                    </div>
-                </div>
-              {:else}
-                no data
-              {/each}
-       
-        </div>
-    </div>
- 
+<section class="p-12" style="contain: content;">
+
+  
+
+        
+        <!--  add component -->
+         <Add bind:machineries={machinery.models} />
+        
+         <Table 
+             bind:filter
+             headings={['#',"ID","ADI"]} >
+             {#each machinery.models as model, index (model._id) }
+                 <TableRow   on:edit={({detail})=>edible = detail}
+                 index={model._id} cells={[index + 1, model._id, model.name]} />
+             {/each}
+         </Table>
+     
+     
+         <EditModel
+             id={edible[1]}
+             name={edible[2]}
+             isEditing={!!edible}
+             handleEdit={handleEditModel}
+             handleDelete={handleDeleteModel}
+         />
 </section>

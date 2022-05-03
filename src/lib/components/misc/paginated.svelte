@@ -1,0 +1,30 @@
+<script lang="ts">
+    export let selected: boolean = true
+</script>
+
+<svg 
+on:click
+class:selected={selected}
+width="18" height="25" viewBox="0 0 18 41" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0.250122 0.247086H3.47574V24.5086H0.250122V0.247086Z" fill="#ECEFF7"/>
+    <path d="M4.77628 0.247086H8.00191V24.5086H4.77628V0.247086Z" fill="#ECEFF7"/>
+    <path d="M9.30245 0.247086H12.5281V24.5086H9.30245V0.247086Z" fill="#ECEFF7"/>
+    <path d="M13.8286 0.247086H17.0542V24.5086H13.8286V0.247086Z" fill="#ECEFF7"/>
+    <path d="M0.250122 27.4321H17.0542V40.9524H0.250122V27.4321Z" fill="#ECEFF7"/>
+    </svg>
+    
+    <style lang="less">
+        SVG:hover {
+            path {
+                @apply fill-pink-200;
+            } 
+        }
+    
+    
+        .selected {
+            
+            path {
+                @apply fill-pink-600;
+            }
+        }
+    </style>    
