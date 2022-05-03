@@ -75,6 +75,7 @@
     <Add bind:machineries={machineries} />
     <Table 
         bind:filter
+        search={false}
         headings={['#',"ID","ADI"]} >
         {#each machineries.filter( (x)=>filterPrediction(x), machineries) as machine, index (machine._id) }
             <TableRow   on:edit={({detail})=>edible=detail}

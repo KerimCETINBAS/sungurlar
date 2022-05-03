@@ -9,11 +9,14 @@
         let paginated: boolean = true
 
         export let filter: string = ""
-
+        export let search: boolean
         export let headings: string[] | SvelteComponent[] = ["#", "makina adi", "#"]
     </script>
+
+{#if search}
     <div class="w-full bg-cool-gray-700 px-6 py-4  flex flex-row">
 
+   
         <label class="bg-white flex h-8 items-center px-2 w-101">
 
             <i class="fa fa-search bg-white"></i>
@@ -21,7 +24,8 @@
             
 
         </label>
-        
+    
+
         <div class="flex self-end place-self-end w-full justify-end h-8  items-center">
         
             {#if paginated}
@@ -47,7 +51,7 @@
             </div>
         </div>
     </div>
-
+    {/if}
    <div class="bg-cool-gray-300 ">
     <div class="table  w-full bg-cool-gray-00   border-collapse ">
  

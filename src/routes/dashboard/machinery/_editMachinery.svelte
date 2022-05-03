@@ -21,8 +21,9 @@ import { goto } from "$app/navigation";
                             <Inputs.Text bind:value={name} />
                             <Buttons.Primary on:click={()=>handleEdit(id, name)}>Kaydet</Buttons.Primary>
                             <Buttons.Primary on:click={()=>{
-                                goto("/dashboard/machinery/" + id)
                                 isEditing = false
+                                goto("/dashboard/machinery/" + id)
+                                
                             }}>Detay</Buttons.Primary>
                             <Buttons.Secondary on:click={()=> {
                                 handleDelete(String(id))

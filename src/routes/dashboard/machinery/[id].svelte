@@ -23,11 +23,10 @@
     import EditModel from "./_editModel.svelte";
     import Add from "./_addModel.svelte";
     export let machinery: IMachinery
-    export let modelName = ""
 
-    let edible: Array<string> = []
+    let edible: Array<string> | undefined 
     let filter: string = ""
-    const handleAddNewModel = async () => {
+    const handleAddNewModel = async (name:string) => {
 
          machinery.models = [...machinery.models, await fetch("/api/machinery/" + $page.params.id, {
             method: "put",
@@ -35,7 +34,7 @@
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                name: modelName
+                name
             })
         }).then(data=>data.json()).then( data => data.model)]
 
@@ -80,16 +79,17 @@
  
 </section> -->
 
-<section class="p-12" style="contain: content;">
+<section class="p-12 h-full" style="contain: content;">
 
   
 
         
         <!--  add component -->
-         <Add bind:machineries={machinery.models} />
+         <Add handler={handleAddNewModel} />
         
          <Table 
              bind:filter
+             search={false}
              headings={['#',"ID","ADI"]} >
              {#each machinery.models as model, index (model._id) }
                  <TableRow   on:edit={({detail})=>edible = detail}
@@ -99,10 +99,10 @@
      
      
          <EditModel
-             id={edible[1]}
-             name={edible[2]}
-             isEditing={!!edible}
-             handleEdit={handleEditModel}
-             handleDelete={handleDeleteModel}
+            id={edible && edible[1] || ""}
+            name={edible && edible[2] || ""}
+            isEditing={!!edible}
+            handleEdit={handleEditModel}
+            handleDelete={handleDeleteModel}
          />
 </section>
